@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define INPUT_FILE01_NAME "file01.in"
-#define OUTPUT_FILE01_NAME "file01.out"
-#define INPUT_FILE02_NAME "file02.in"
-#define OUTPUT_FILE02_NAME "file02.out"
-#define INPUT_FILE03_NAME "file03.in"
-#define OUTPUT_FILE03_NAME "file03.out"
+#define INPUT_FILE_NAME_01 "file01.in"
+#define OUTPUT_FILE_NAME_01 "file01.out"
+#define INPUT_FILE_NAME_02 "file02.in"
+#define OUTPUT_FILE_NAME_02 "file02.out"
+#define INPUT_FILE_NAME_03 "file03.in"
+#define OUTPUT_FILE_NAME_03 "file03.out"
 
 #define READING_FILE_OPTIONS "rb"
 #define WRITING_FILE_OPTIONS "wb"
@@ -21,33 +21,34 @@ int encryptFile(char * inputFileName, char * outputFileName, int key);
 
 int decryptFile(char * inputFileName, char * outputFileName, int key);
 
-int executeFileActions(FILE * inputFile, FILE * outputFile, int key, unsigned char (*generateCharacter)(unsigned char, int));
+int executeFileActions(FILE * inputFile, FILE * outputFile, int key,
+                       unsigned char (*generateCharacter)(unsigned char, int));
 
 int init(char operation, int key, char * inputFileName, char * outputFileName);
 
-void testExemple01() {
-    if (init('E', 3, INPUT_FILE01_NAME, OUTPUT_FILE01_NAME) != 0) {
+void testExample01() {
+    if (init('E', 3, INPUT_FILE_NAME_01, OUTPUT_FILE_NAME_01) != 0) {
         fprintf(stderr, "Houveram erros durante a execução do exemplo 01.\n");
     }
 }
 
-void testExemple02() {
-	if (init('D', 3, INPUT_FILE02_NAME, OUTPUT_FILE02_NAME) != 0) {
+void testExample02() {
+	if (init('D', 3, INPUT_FILE_NAME_02, OUTPUT_FILE_NAME_02) != 0) {
         fprintf(stderr, "Houveram erros durante a execução do exemplo 02.\n");
     }
 }
 
-void testExemple03() {
-	if (init('E', 10, INPUT_FILE03_NAME, OUTPUT_FILE03_NAME) != 0) {
+void testExample03() {
+	if (init('E', 10, INPUT_FILE_NAME_03, OUTPUT_FILE_NAME_03) != 0) {
         fprintf(stderr, "Houveram erros durante a execução do exemplo 03.\n");
     }
 }
 
 int main () {
 
-	testExemple01();
-	testExemple02();
-	testExemple03();
+    testExample01();
+    testExample02();
+    testExample03();
 
 	return 0;
 }
@@ -116,7 +117,8 @@ int decryptFile(char * inputFileName, char * outputFileName, int key) {
 /**
  * Função que realiza a encriptação/decriptação do arquivo de acordo com os parâmetros passados
  */
-int executeFileActions(FILE * inputFile, FILE * outputFile, int key, unsigned char (*generateCharacter)(unsigned char, int)) {
+int executeFileActions(FILE * inputFile, FILE * outputFile, int key,
+                       unsigned char (*generateCharacter)(unsigned char, int)) {
 
     int sizeOfReadCharacter = 0;
     unsigned char buffer;
@@ -178,7 +180,8 @@ FILE * getFile(char * fileName, char * fileOptions) {
     FILE * pFile = fopen(fileName, fileOptions);
 
     if (pFile == NULL) {
-        fprintf(stderr, "Erro ao ler arquivo. Verifique se o mesmo existe no diretório, ou se o nome está correto.\n");
+        fprintf(stderr, "Erro ao ler arquivo. "
+                "Verifique se o mesmo existe no diretório, ou se o nome está correto.\n");
         exit(-1);
     }
 
