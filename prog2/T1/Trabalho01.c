@@ -1,13 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define INPUT_FILE_NAME_01 "file01.in"
-#define OUTPUT_FILE_NAME_01 "file01.out"
-#define INPUT_FILE_NAME_02 "file02.in"
-#define OUTPUT_FILE_NAME_02 "file02.out"
-#define INPUT_FILE_NAME_03 "file03.in"
-#define OUTPUT_FILE_NAME_03 "file03.out"
-
 #define READING_FILE_OPTIONS "rb"
 #define WRITING_FILE_OPTIONS "wb"
 
@@ -26,29 +19,28 @@ int executeFileActions(FILE * inputFile, FILE * outputFile, int key,
 
 int init(char operation, int key, char * inputFileName, char * outputFileName);
 
-void testExample01() {
-    if (init('E', 3, INPUT_FILE_NAME_01, OUTPUT_FILE_NAME_01) != 0) {
-        fprintf(stderr, "Houveram erros durante a execução do exemplo 01.\n");
-    }
-}
-
-void testExample02() {
-	if (init('D', 3, INPUT_FILE_NAME_02, OUTPUT_FILE_NAME_02) != 0) {
-        fprintf(stderr, "Houveram erros durante a execução do exemplo 02.\n");
-    }
-}
-
-void testExample03() {
-	if (init('E', 10, INPUT_FILE_NAME_03, OUTPUT_FILE_NAME_03) != 0) {
-        fprintf(stderr, "Houveram erros durante a execução do exemplo 03.\n");
-    }
-}
-
 int main () {
 
-    testExample01();
-    testExample02();
-    testExample03();
+    unsigned char operation;
+    int key = 0;
+    char inputFileName [100]; 
+    char outputFileName [100];
+
+    printf("Programa de encriptação/decriptação de arquivos. Siga os passos para utilizar o programa.\n");
+
+    printf("Entre com o operação que deseja realizar (E para encriptação, D para decriptação): \n");
+    scanf("%c", &operation);
+
+    printf("Entre com a chave de encriptação: \n");
+    scanf("%d", &key);
+
+    printf("Entre com o nome do arquivo de entrada: \n");
+    scanf("%s", inputFileName);
+
+    printf("Entre com o nome do arquivo de saída: \n");
+    scanf("%s", outputFileName);
+
+    init(operation, key, inputFileName, outputFileName);
 
 	return 0;
 }
