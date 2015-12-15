@@ -23,7 +23,7 @@ int main () {
 
     unsigned char operation;
     int key = 0;
-    char inputFileName [100]; 
+    char inputFileName [100];
     char outputFileName [100];
 
     printf("Programa de encriptação/decriptação de arquivos. Siga os passos para utilizar o programa.\n");
@@ -142,7 +142,7 @@ int executeFileActions(FILE * inputFile, FILE * outputFile, int key,
  */
 unsigned char generateNextCharacter(unsigned char character, int offset){
 
-    for(;offset;offset--) {
+    for(offset = offset % 255; offset; offset--) {
 
         character = (character > 255) ? 0 : character + 1;
 
@@ -157,7 +157,7 @@ unsigned char generateNextCharacter(unsigned char character, int offset){
  */
 unsigned char generatePreviousCharacter(unsigned char character, int offset){
 
-    for(;offset;offset--) {
+    for(offset = offset % 255; offset; offset--) {
 
         character = (character < 1) ? 255 : character - 1;
 
