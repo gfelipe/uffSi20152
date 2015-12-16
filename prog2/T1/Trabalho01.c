@@ -26,18 +26,9 @@ int main () {
     char inputFileName [100];
     char outputFileName [100];
 
-    printf("Programa de encriptação/decriptação de arquivos. Siga os passos para utilizar o programa.\n");
-
-    printf("Entre com o operação que deseja realizar (E para encriptação, D para decriptação): \n");
     scanf("%c", &operation);
-
-    printf("Entre com a chave de encriptação: \n");
     scanf("%d", &key);
-
-    printf("Entre com o nome do arquivo de entrada: \n");
     scanf("%s", inputFileName);
-
-    printf("Entre com o nome do arquivo de saída: \n");
     scanf("%s", outputFileName);
 
     init(operation, key, inputFileName, outputFileName);
