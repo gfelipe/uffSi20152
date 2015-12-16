@@ -165,7 +165,7 @@ FILE * getFile(char * fileName, char * fileOptions) {
     if (pFile == NULL) {
         fprintf(stderr, "Erro ao ler arquivo. "
                 "Verifique se o mesmo existe no diretório, ou se o nome está correto.\n");
-        exit(-1);
+        exit(1);
     }
 
     return pFile;
