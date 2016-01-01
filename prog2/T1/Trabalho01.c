@@ -26,18 +26,9 @@ int main () {
     char inputFileName [100];
     char outputFileName [100];
 
-    printf("Programa de encriptação/decriptação de arquivos. Siga os passos para utilizar o programa.\n");
-
-    printf("Entre com o operação que deseja realizar (E para encriptação, D para decriptação): \n");
     scanf("%c", &operation);
-
-    printf("Entre com a chave de encriptação: \n");
     scanf("%d", &key);
-
-    printf("Entre com o nome do arquivo de entrada: \n");
     scanf("%s", inputFileName);
-
-    printf("Entre com o nome do arquivo de saída: \n");
     scanf("%s", outputFileName);
 
     init(operation, key, inputFileName, outputFileName);
@@ -174,7 +165,7 @@ FILE * getFile(char * fileName, char * fileOptions) {
     if (pFile == NULL) {
         fprintf(stderr, "Erro ao ler arquivo. "
                 "Verifique se o mesmo existe no diretório, ou se o nome está correto.\n");
-        exit(-1);
+        exit(1);
     }
 
     return pFile;
