@@ -16,14 +16,14 @@ unsigned long long somafat_rec(unsigned short n, int *tempo) {
     if (n == 1) {
 
         totalTimeOfExecutionClock = clock() - startOfExecutionClock;
-        (*tempo) = (*tempo) + (int)(((float)totalTimeOfExecutionClock)/CLOCKS_PER_SEC);
+        (*tempo) = (*tempo) + (int)totalTimeOfExecutionClock;
 
         return 1;
 
     } else {
 
         totalTimeOfExecutionClock = clock() - startOfExecutionClock;
-        (*tempo) = (*tempo) + (int)(((float)totalTimeOfExecutionClock)/CLOCKS_PER_SEC);
+        (*tempo) = (*tempo) + (int)totalTimeOfExecutionClock;
 
         return fat(n) + somafat_rec(n-1,tempo);
 
@@ -43,7 +43,7 @@ unsigned long long somafat_norm(unsigned short n, int *tempo) {
 	}
 
 	totalTimeOfExecutionClock = clock() - startOfExecutionClock;
-	(*tempo) = (int)(((float)totalTimeOfExecutionClock)/CLOCKS_PER_SEC);
+	(*tempo) = (int)totalTimeOfExecutionClock;
 
 	return fatorialSum;
 
@@ -58,16 +58,16 @@ int main() {
 
     unsigned long long normalFatorialSum;
     unsigned long long recursiveFatorialSum;
-
-    scanf("%hu", &input);
+    
+    fscanf(stdin, "%hu", &input);
 
     normalFatorialSum = somafat_norm(input, normalExecutionClock);
     recursiveFatorialSum = somafat_rec(input, recursiveExecutionClock);
 
-    printf("A soma fatorial de %hu é: %llu\n", input, normalFatorialSum);
-    printf("A soma fatorial de %hu é: %llu\n", input, recursiveFatorialSum);
-    printf("O tempo com recursão é de: %d\n", *recursiveExecutionClock);
-    printf("O tempo sem recursão é de: %d\n", *normalExecutionClock);
+    fprintf(stdout, "A soma fatorial de %hu é: %llu\n", input, normalFatorialSum);
+    fprintf(stdout, "A soma fatorial de %hu é: %llu\n", input, recursiveFatorialSum);
+    fprintf(stderr, "O tempo com recursão é de: %d\n", *recursiveExecutionClock);
+    fprintf(stderr, "O tempo sem recursão é de: %d\n", *normalExecutionClock);
 
 	return 0;
 
