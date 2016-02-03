@@ -9,7 +9,8 @@ typedef struct fila {
 } Fila;
 
 Fila criaFila();
-void insereFila(Fila f, int * elemento, int quantidade);
+int insereFila(Fila f, int * elemento, int quantidade);
 int removeFila(Fila f, int quantidade);
+void imprimeFila(Fila f);
 
 #endif

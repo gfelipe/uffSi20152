@@ -6,7 +6,9 @@ typedef struct pilha {
 	int tamanho;
 } Pilha;
 
-void inserePilha(Pilha p, int * elemento, int quantidade);
+Pilha criaPilha();
+int inserePilha(Pilha p, int * elemento, int quantidade);
 int removePilha(Pilha p, int quantidade);
+void imprimePilha(Pilha p);
 
 #endif
