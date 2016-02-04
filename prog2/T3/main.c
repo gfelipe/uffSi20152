@@ -5,6 +5,8 @@
 #include "fila.h"
 #include "pilha.h"
 
+#define DELIMITADOR " PFirp"
+
 typedef struct entrada {
 	int elementos[100];
 	int quantidade;
@@ -32,13 +34,13 @@ int main() {
 
 void processaEntrada(Fila * fila, Pilha * pilha) {
 
-	char * buffer = (char*)malloc(100*sizeof(int) + 106*sizeof(char));
-	Entrada entrada;
-
+    Entrada entrada;
+    size_t tamanhoEntrada = 100*sizeof(int) + 106*sizeof(char);
+    char * buffer = (char*)malloc(tamanhoEntrada);
 
 	while( !terminarExecucao(entrada) ) {
 		
-		fgets(buffer, sizeof(buffer), stdin);
+		fgets(buffer, tamanhoEntrada, stdin);
 
 		entrada.estrutura = buffer[0];
 		entrada.comando = buffer[2];
@@ -47,10 +49,10 @@ void processaEntrada(Fila * fila, Pilha * pilha) {
 		if(entrada.quantidade) {
 
             int i;
-            char * stringBuffer = strtok(buffer, " PFirp"); // Ignorando o primeiro número encontrado, pois é a quantidade.
+            char * stringBuffer = strtok(buffer, DELIMITADOR); // Ignorando o primeiro número encontrado, pois é a quantidade.
 
             // Separando a string de entrada em tokens, que serão os números para inserir. Usando como delimitadores os espaços, e as letras de comando/estrutura.
-			for(stringBuffer = strtok(NULL, " PFirp"), i = 0; stringBuffer != NULL; stringBuffer = strtok(NULL, " PFirp"), i++){
+			for(stringBuffer = strtok(NULL, DELIMITADOR), i = 0; stringBuffer != NULL; stringBuffer = strtok(NULL, DELIMITADOR), i++){
                 entrada.elementos[i] = strtol(stringBuffer, NULL, 10);
 			}
 
@@ -66,9 +68,6 @@ void processaEntrada(Fila * fila, Pilha * pilha) {
 			case 'p':
 				imprimir(*fila, *pilha, entrada);
 				break;
-            default:
-                fprintf(stderr, "Opção não encontrada.");
-                break;
 		}
 
 	}
