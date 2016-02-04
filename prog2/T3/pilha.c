@@ -8,32 +8,32 @@ Pilha criaPilha() {
 	return pilha;
 }
 
-int inserePilha(Pilha p, int * elemento, int quantidade) {
+int inserePilha(Pilha * p, int * elemento, int quantidade) {
 	
 	int i;
 	
-	if(p.tamanho + quantidade > 100) {
+	if((*p).tamanho + quantidade > 100) {
 		return 1;
 	}
 
 	for(i = 0; i < quantidade ; i++) {
-		p.elementos[p.tamanho++] = elemento[i];
+		(*p).elementos[(*p).tamanho++] = elemento[i];
 	}
 	
 	return 0;
 
 }
 
-int removePilha(Pilha p, int quantidade) {
+int removePilha(Pilha * p, int quantidade) {
 	
 	int i;
 
-	if(p.tamanho == 0 || p.tamanho - quantidade < 0) {
+	if((*p).tamanho == 0 || (*p).tamanho - quantidade < 0) {
 		return 1;
 	}
 
 	for(i = 0; i < quantidade ; i++) {
-		p.elementos[--p.tamanho] = 0;
+		(*p).elementos[--(*p).tamanho] = 0;
 	}
 
 	return 0;

@@ -12,9 +12,9 @@ typedef struct entrada {
 	char estrutura;
 } Entrada;
 
-void processaEntrada(Fila fila, Pilha pilha);
-int inserir(Fila fila, Pilha pilha, Entrada entrada);
-int remover(Fila fila, Pilha pilha, Entrada entrada);
+void processaEntrada(Fila * fila, Pilha * pilha);
+int inserir(Fila * fila, Pilha * pilha, Entrada entrada);
+int remover(Fila * fila, Pilha * pilha, Entrada entrada);
 void imprimir(Fila fila, Pilha pilha, Entrada entrada);
 bool terminarExecucao(Entrada entrada);
 void tratarRetorno(int retorno, char * acao);
@@ -24,62 +24,58 @@ int main() {
 	Fila fila = criaFila();
 	Pilha pilha = criaPilha();
 
-	processaEntrada(fila, pilha);
+	processaEntrada(&fila, &pilha);
 
 	return 0;
 
 }
 
-void processaEntrada(Fila fila, Pilha pilha) {
+void processaEntrada(Fila * fila, Pilha * pilha) {
 
-	int i = 0;
-	int retorno;
-	char * buffer = (char*)malloc(203*sizeof(char));;
-	char * stringBuffer;
+	char * buffer = (char*)malloc(100*sizeof(int) + 106*sizeof(char));
 	Entrada entrada;
 
 
 	while( !terminarExecucao(entrada) ) {
 		
-		fgets(buffer, "%s", stdin);
+		fgets(buffer, sizeof(buffer), stdin);
 
 		entrada.estrutura = buffer[0];
 		entrada.comando = buffer[2];
-		entrada.quantidade = buffer[4];
+		entrada.quantidade = strtol(&buffer[4], NULL, 10);
 
 		if(entrada.quantidade) {
 
-//			strncpy(buffer, buffer+5, strlen(buffer)-5);
+            int i;
+            char * stringBuffer = strtok(buffer, " PFirp"); // Ignorando o primeiro número encontrado, pois é a quantidade.
 
-			stringBuffer = strtok(buffer, " PFir");
-
-			while(stringBuffer != NULL){
-				entrada.elementos[i] = strtol(stringBuffer, NULL, 10);
-				stringBuffer = strtok(NULL, " PFir");
-				i++;
+            // Separando a string de entrada em tokens, que serão os números para inserir. Usando como delimitadores os espaços, e as letras de comando/estrutura.
+			for(stringBuffer = strtok(NULL, " PFirp"), i = 0; stringBuffer != NULL; stringBuffer = strtok(NULL, " PFirp"), i++){
+                entrada.elementos[i] = strtol(stringBuffer, NULL, 10);
 			}
 
 		}
 
-		printf("Teste: %c\n%c\n%d\n%s" entrada.estrutura, entrada.comando, entrada.quantidade, entrada.elementos);
-
-		switch (entrada.comando) {
+        switch (entrada.comando) {
 			case 'i':
-				retorno = inserir(fila, pilha, entrada);
-				tratarRetorno(retorno, "inserir");
+				tratarRetorno(inserir(fila, pilha, entrada), "inserir");
+                break;
 			case 'r':
-				retorno = remover(fila, pilha, entrada);
-				tratarRetorno(retorno, "remover");
+				tratarRetorno(remover(fila, pilha, entrada), "remover");
+                break;
 			case 'p':
-				imprimir(fila, pilha, entrada);
+				imprimir(*fila, *pilha, entrada);
 				break;
+            default:
+                fprintf(stderr, "Opção não encontrada.");
+                break;
 		}
 
 	}
 
 }
 
-int inserir(Fila fila, Pilha pilha, Entrada entrada) {
+int inserir(Fila * fila, Pilha * pilha, Entrada entrada) {
 
 	switch(entrada.estrutura) {
 		case 'P':
@@ -87,12 +83,12 @@ int inserir(Fila fila, Pilha pilha, Entrada entrada) {
 		case 'F':
 			return insereFila(fila, entrada.elementos, entrada.quantidade);
 		default:
-			return 1;	
+			return 1;
 	}
 	
 }
 
-int remover(Fila fila, Pilha pilha, Entrada entrada) {
+int remover(Fila * fila, Pilha * pilha, Entrada entrada) {
 
 
 	switch(entrada.estrutura) {
@@ -101,7 +97,7 @@ int remover(Fila fila, Pilha pilha, Entrada entrada) {
 		case 'F':
 			return removeFila(fila, entrada.quantidade);
 		default:
-			return 1;	
+			return 1;
 	}
 
 }
@@ -117,12 +113,12 @@ void imprimir(Fila fila, Pilha pilha, Entrada entrada) {
 
 }
 
-bool terminarExecucao(Entrada entrada) {
-	return entrada.estrutura == 'S';
-}
-
-void tratarRetorno(int retorno, char * acao) {
-	if (retorno == 1){
+void tratarRetorno(int erro, char * acao) {
+	if (erro){
 		fprintf(stderr, "Nao foi possivel %s os elementos\n", acao);
 	}
+}
+
+bool terminarExecucao(Entrada entrada) {
+    return entrada.estrutura == 'S';
 }

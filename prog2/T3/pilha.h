@@ -7,8 +7,8 @@ typedef struct pilha {
 } Pilha;
 
 Pilha criaPilha();
-int inserePilha(Pilha p, int * elemento, int quantidade);
-int removePilha(Pilha p, int quantidade);
+int inserePilha(Pilha * p, int * elemento, int quantidade);
+int removePilha(Pilha * p, int quantidade);
 void imprimePilha(Pilha p);
 
 #endif
