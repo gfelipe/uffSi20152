@@ -1,5 +1,6 @@
 #include <string.h>
 #include "matriz.h"
+#include <limits.h>
 
 typedef char * String;
 
@@ -43,14 +44,12 @@ void destroiMatriz(Matriz *M) {
 // leitura da matriz M
 void leituraMatriz(Matriz *M){
 
-//    String linhaMatriz = (String) malloc((*M).m*2);
-//    String buffer;
-    char * linhaMatriz = (char *) malloc(sizeof(int)*(*M).m*2);
-    char * buffer;
+    String linhaMatriz = (String) malloc(sizeof(int)*(*M).m*2);
+    String buffer;
     int i, j;
 
     for (i = 0; i < (*M).n; ++i) {
-        fgets(linhaMatriz, (*M).m * 2, stdin);
+        fgets(linhaMatriz, INT_MAX, stdin);
 
         for (j = 0, buffer = strtok(linhaMatriz, " "); buffer != NULL; buffer = strtok(NULL, " "), j++) {
             (*M).mat[i][j] = strtol(buffer, NULL, 10);
