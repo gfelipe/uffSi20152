@@ -15,7 +15,7 @@ void sumMatrix(Matriz matriz1, Matriz matriz2);
 int main() {
 
     processaEntrada();
-//set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
     return 0;
 
 }
@@ -42,8 +42,8 @@ void processaEntrada() {
 
         switch (entrada) {
             case 'S':
-                destroiMatriz(&A);
-                destroiMatriz(&B);
+                if (existeMatriz(A)) destroiMatriz(&A);
+                if (existeMatriz(B)) destroiMatriz(&B);
                 break;
             case 'C':
                 n = strtol(&buffer[4], NULL, 10);

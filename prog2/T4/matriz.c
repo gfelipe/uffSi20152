@@ -29,10 +29,6 @@ Matriz criaMatriz(int n, int m) {
 // desaloca a matriz M da memória
 void destroiMatriz(Matriz *M) {
 
-    if(!existeMatriz(*M)) {
-        return;
-    }
-
     for (int i = 0; i < (*M).m; ++i) {
         free((*M).mat[i]);
     }
