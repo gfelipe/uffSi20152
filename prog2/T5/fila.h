@@ -1,8 +1,18 @@
-//
-// Created by Felipe on 12/03/2016.
-//
+#ifndef FILA_H
+#define FILA_H
 
-#ifndef T5_FILA_H
-#define T5_FILA_H
+typedef struct node {
+    char * name;
+    int time;
+    struct node * next;
+} Node;
 
-#endif //T5_FILA_H
+int existsList(Node * list);
+Node * createList();
+Node * createNode(char * name, int time);
+void insertNode(Node * list, Node * node);
+void removeNode(Node * list);
+int getListSize(Node * list);
+void printList(Node * list);
+
+#endif
