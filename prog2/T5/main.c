@@ -11,7 +11,7 @@
 
 /*
 2
-1
+AAA1234 1
 BBB1234 1
 2
 CCC1234 1
@@ -19,21 +19,24 @@ DDD1234 1
 */
 
 bool isAirstripFree(int firstAirstrip);
-int readInput(Node *flights, char * operationName);
+int readInput(Node ** flights, char * operationName);
 void processPlanes(Node * departingFlights, Node * landingFlights);
 void printAction(char * name, char * actionName, int airstripNumber);
-Node * getPrioritizedList(Node * departingFlights, Node * landingFlights, char * name);
+Node * getPrioritizedList(Node * departingFlights, Node * landingFlights, char ** name);
+
+void fazasparada(Node **pNode);
 
 int main() {
 
     Node * departingFlights = createList();
     Node * landingFlights = createList();
 
-    int departingPlanes = readInput(departingFlights, "decolagem");
-    int landingPlanes = readInput(landingFlights, "pouso");
+    readInput(&departingFlights, "decolagem");
+    readInput(&landingFlights, "pouso");
 
     //TODO remover antes da entrega
-    printList(departingFlights); printList(landingFlights);
+    printList(departingFlights);
+    printList(landingFlights);
 
     processPlanes(departingFlights, landingFlights);
 
@@ -53,48 +56,52 @@ void processPlanes(Node * departingFlights, Node * landingFlights) {
 
             firstAirstrip = departingFlights->time;
             printAction(departingFlights->name, DEPARTING_NAME, 1);
-            removeNode(departingFlights);
-
-        } else if(isAirstripFree(secondAirstrip) && landingFlights != NULL) {
-
-            secondAirstrip = landingFlights->time;
-            printAction(departingFlights->name, LANDING_NAME, 2);
-            removeNode(landingFlights);
-
-        } else if(isAirstripFree(thirdAirstrip) && (departingFlights != NULL || landingFlights != NULL)) {
-
-            char * name;
-            Node * priorityList = getPrioritizedList(departingFlights, landingFlights, name);
-
-            thirdAirstrip = priorityList->time;
-            printAction(departingFlights->name, name, 3);
-            removeNode(priorityList);
+            removeNode(&departingFlights);
 
         }
 
-        firstAirstrip--;
-        secondAirstrip--;
-        thirdAirstrip--;
+        if(isAirstripFree(secondAirstrip) && landingFlights != NULL) {
+
+            secondAirstrip = landingFlights->time;
+            printAction(landingFlights->name, LANDING_NAME, 2);
+            removeNode(&landingFlights);
+
+        }
+
+        if(isAirstripFree(thirdAirstrip) && (departingFlights != NULL || landingFlights != NULL)) {
+
+            char * name;
+            Node * priorityList = getPrioritizedList(departingFlights, landingFlights, &name);
+
+            thirdAirstrip = priorityList->time;
+            printAction(priorityList->name, name, 3);
+            removeNode(&priorityList);
+
+        }
+
+        if (firstAirstrip > 0) firstAirstrip--;
+        if (secondAirstrip > 0) secondAirstrip--;
+        if (thirdAirstrip > 0) thirdAirstrip--;
 
     }
 }
 
 bool isAirstripFree(int firstAirstrip) { return firstAirstrip == 0; }
 
-Node * getPrioritizedList(Node * departingFlights, Node * landingFlights, char * name) {
+Node * getPrioritizedList(Node * departingFlights, Node * landingFlights, char ** name) {
 
     int landingPlanes = getListSize(landingFlights);
     int departingPlanes = getListSize(departingFlights);
     Node * biggerList;
 
     if(landingPlanes > departingPlanes) {
-        name = LANDING_NAME;
+        *name = LANDING_NAME;
         biggerList = landingFlights;
     } else if (landingPlanes < departingPlanes) {
-        name = DEPARTING_NAME;
+        *name = DEPARTING_NAME;
         biggerList = departingFlights;
     } else {
-        name = LANDING_NAME;
+        *name = LANDING_NAME;
         biggerList = landingFlights;
     }
 
@@ -105,9 +112,9 @@ void printAction(char * name, char * actionName, int airstripNumber) {
     fprintf(stdout, "O aviao %s esta %s na pista %d\n", name, actionName, airstripNumber);
 }
 
-int readInput(Node * flights, char * operationName) {
+int readInput(Node ** flights, char * operationName) {
 
-    char * buffer = (char*) malloc(INT_MAX * sizeof(char));
+    char * buffer = (char*) malloc(100*sizeof(char));
 
     fprintf(stdout, "Digite o numero de avioes para %s\n", operationName);
     int planes = strtol(fgets(buffer, INT_MAX, stdin), NULL, 10);
