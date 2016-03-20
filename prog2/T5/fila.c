@@ -23,11 +23,11 @@ Node * createNode(char * name, int time) {
 
 }
 
-void insertNode(Node ** list, Node * node){
+void insertNode(Node ** list, char * name, int time){
 
-    if(node == NULL) {
-        fprintf(stderr, "Nó não pode ser NULL.");
-    } else if(*list == NULL){
+    Node * node = createNode(name, time);
+
+    if(*list == NULL){
         *list = node;
     } else {
 
@@ -50,11 +50,13 @@ void removeNode(Node ** list){
     if(!existsList(*list)) {
         fprintf(stderr, "Lista já se encontra vazia.");
     } else if ((*list)->next == NULL) {
-        free(list);
+        free((*list)->name);
+        free(*list);
         *list = NULL;
     } else {
         Node * tmp = *list;
         *list = (*list)->next;
+        free(tmp->name);
         free(tmp);
     }
 
@@ -80,6 +82,17 @@ void printList(Node * list){
     for(int i =0; tmp != NULL; i++){
         printf("Aviao: %s Tempo: %d Posiçao: %d\n", tmp->name, tmp->time, i+1);
         tmp = tmp->next;
+    }
+
+}
+
+void destroyList(Node ** list){
+
+    while(*list!=NULL){
+        Node * tmp = *list;
+        *list = (*list)->next;
+        free(tmp->name);
+        free(tmp);
     }
 
 }
