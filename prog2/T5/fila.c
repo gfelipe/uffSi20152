@@ -27,13 +27,13 @@ void insertNode(Node ** list, char * name, int time){
 
     Node * node = createNode(name, time);
 
-    if(*list == NULL){
+    if(!existsList(*list)){
         *list = node;
     } else {
 
         Node * tmp = *list;
 
-        while(tmp != NULL) {
+        while(existsList(tmp)) {
             if(tmp->next == NULL) {
                 tmp->next = node;
                 break;
@@ -66,7 +66,7 @@ int getListSize(Node * list) {
 
     int size = 0;
 
-    while(list != NULL) {
+    while(existsList(list)) {
         list = list->next;
         size++;
     }
@@ -88,7 +88,7 @@ void printList(Node * list){
 
 void destroyList(Node ** list){
 
-    while(*list!=NULL){
+    while(existsList(*list)){
         Node * tmp = *list;
         *list = (*list)->next;
         free(tmp->name);

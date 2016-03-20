@@ -8,12 +8,14 @@
 
 #define DEPARTING_NAME "decolando"
 #define LANDING_NAME "pousando"
+#define LANDING_FLIGHTS_PRIORITY_NUMBER 1
+#define DEPARTING_FLIGHTS_PRIORITY_NUMBER 2
 
-bool isAirstripFree(int firstAirstrip);
+bool isAirstripFree(int airstrip);
 int readInput(Node ** flights, char * operationName);
 void processPlanes(Node * departingFlights, Node * landingFlights);
 void printAction(char * name, char * actionName, int airstripNumber);
-Node *** getPrioritizedList(Node ** departingFlights, Node ** landingFlights, char ** name);
+int getPrioritizedList(Node * departingFlights, Node * landingFlights);
 
 int main() {
 
@@ -23,14 +25,7 @@ int main() {
     readInput(&departingFlights, "decolagem");
     readInput(&landingFlights, "pouso");
 
-    //TODO remover antes da entrega
-    printList(departingFlights);
-    printList(landingFlights);
-
     processPlanes(departingFlights, landingFlights);
-
-//    destroyList(&departingFlights);
-//    destroyList(&landingFlights);
 
     return 0;
 
@@ -62,12 +57,21 @@ void processPlanes(Node * departingFlights, Node * landingFlights) {
 
         if(isAirstripFree(thirdAirstrip) && (departingFlights != NULL || landingFlights != NULL)) {
 
-            char * name;
-            Node *** priorityList = getPrioritizedList(&departingFlights, landingFlights, &name);
+            switch(getPrioritizedList(departingFlights, landingFlights)){
 
-            thirdAirstrip = (**priorityList)->time;
-            printAction((**priorityList)->name, name, 3);
-            removeNode(*priorityList);
+                case LANDING_FLIGHTS_PRIORITY_NUMBER:
+                    thirdAirstrip = landingFlights->time;
+                    printAction(landingFlights->name, LANDING_NAME, 3);
+                    removeNode(&landingFlights);
+                    break;
+
+                case DEPARTING_FLIGHTS_PRIORITY_NUMBER:
+                    thirdAirstrip = departingFlights->time;
+                    printAction(departingFlights->name, DEPARTING_NAME, 3);
+                    removeNode(&departingFlights);
+                    break;
+
+            }
 
         }
 
@@ -78,20 +82,17 @@ void processPlanes(Node * departingFlights, Node * landingFlights) {
     }
 }
 
-Node *** getPrioritizedList(Node ** departingFlights, Node ** landingFlights, char ** name) {
+int getPrioritizedList(Node * departingFlights, Node * landingFlights) {
 
-    int landingPlanes = getListSize(*landingFlights);
-    int departingPlanes = getListSize(*departingFlights);
+    int landingPlanes = getListSize(landingFlights);
+    int departingPlanes = getListSize(departingFlights);
 
     if(landingPlanes > departingPlanes) {
-        *name = LANDING_NAME;
-        return landingFlights;
+        return LANDING_FLIGHTS_PRIORITY_NUMBER;
     } else if (landingPlanes < departingPlanes) {
-        *name = DEPARTING_NAME;
-        return departingFlights;
+        return DEPARTING_FLIGHTS_PRIORITY_NUMBER;
     } else {
-        *name = LANDING_NAME;
-        return landingFlights;
+        return LANDING_FLIGHTS_PRIORITY_NUMBER;
     }
 
 }
@@ -128,4 +129,4 @@ void printAction(char * name, char * actionName, int airstripNumber) {
     fprintf(stdout, "O aviao %s esta %s na pista %d\n", name, actionName, airstripNumber);
 }
 
-bool isAirstripFree(int firstAirstrip) { return firstAirstrip == 0; }
+bool isAirstripFree(int airstrip) { return airstrip == 0; }
